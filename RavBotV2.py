@@ -2,7 +2,7 @@ from discord.ext import commands
 import shlex
 
 bot = commands.Bot(command_prefix='?')
-myToken = "NzQ0NTA3NTI3NzIyNTY1NjYy.XzkOqg.Sfrblh52ZAKy-_jhKeaEnlXgcgU"
+myToken = ""
 
 @bot.command()
 async def join(ctx, *args):
