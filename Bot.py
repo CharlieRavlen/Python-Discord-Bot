@@ -1,14 +1,12 @@
-import time
-
 import discord
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
 
-bot = commands.Bot(command_prefix='')
+bot = commands.Bot(command_prefix='?')
 myToken = open("token.txt", "r").read()
 
 
-@bot.command(pass_context=True, aliases=['ChangeStatus', 'changestatus', 'Status'])
+@bot.command(aliases=['ChangeStatus', 'changestatus', 'Status'])
 async def status(ctx, *, message: str):
     await bot.change_presence(activity=discord.Game(name=message))
 
@@ -20,8 +18,8 @@ async def status_error(ctx, error):
         return
 
 
-@bot.command(pass_context=True)
-async def join(ctx, *args):
+@bot.command()
+async def join(ctx):
     if ctx.author.voice:
         channel = ctx.author.voice.channel
         voice = await channel.connect()
@@ -30,9 +28,9 @@ async def join(ctx, *args):
         await ctx.channel.send("You aren't in a voice channel")
 
 
-@bot.command(pass_context=True)
+@bot.command()
 async def play(ctx, *, args):
-    voice = await join(ctx, args)
+    voice = await join(ctx)
     if voice is None:
         return
     voice.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source="Dancing Queen.m4a"))
@@ -46,7 +44,7 @@ async def play_error(ctx, error):
         return
 
 
-@bot.command(pass_context=True)
+@bot.command()
 async def pause(ctx, *args):
     voice = ctx.voice_client
     if voice is None:
@@ -56,8 +54,8 @@ async def pause(ctx, *args):
     await ctx.send('**Paused**')
 
 
-@bot.command(pass_context=True)
-async def resume(ctx, *args):
+@bot.command()
+async def resume(ctx):
     voice = ctx.voice_client
     if voice is None:
         await ctx.channel.send("Not in a voice channel")
@@ -67,7 +65,7 @@ async def resume(ctx, *args):
 
 
 @bot.command()
-async def leave(ctx, *args):
+async def leave(ctx):
     if ctx.author.voice:
         if ctx.voice_client.channel == ctx.author.voice.channel:
             voice = ctx.voice_client
@@ -78,6 +76,20 @@ async def leave(ctx, *args):
             await ctx.channel.send("You must be in the same voice channel as me")
     else:
         await ctx.channel.send("You aren't in a voice channel")
+
+
+@bot.command()
+async def add(ctx, a: int, b: int):
+    await ctx.channel.send(a + b)
+
+
+def toUpper(value):
+    return value.upper()
+
+
+@bot.command()
+async def test(ctx, a: toUpper):
+    await ctx.channel.send(a)
 
 
 @bot.event
