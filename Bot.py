@@ -33,7 +33,8 @@ async def play(ctx, *, args):
     voice = await join(ctx)
     if voice is None:
         return
-    voice.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source="Dancing Queen.m4a"))
+    song = "test.mp3"
+    voice.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source=song))
     await ctx.send('**Now playing:** {}'.format(args))
 
 
